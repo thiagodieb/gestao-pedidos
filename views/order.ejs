@@ -4,12 +4,22 @@
     <div class="page-header">
       <h1><%= title %></h1>
     </div>
+    <% include back.ejs %>
     <div class="row"> 
       <div class="col-md-6">
         <% if(content.length < 0) { %>
         <button type="button" class="btn btn-success">Abrir Mesa</button>
         <% } else { %>
-        <a href=""><button type="button" class="btn btn-info">Adicionar Item</button></a>
+        <!-- <a href=""><button type="button" class="btn btn-info">Adicionar Item</button></a> -->
+          <button type="button" class="dropdown btn btn-sm btn-primary">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Adicionar Item <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/products/categorie/3">Cafeteria </a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/products/categorie/2">Chocolates</a></li>
+            </ul>
+          </button>
+
         <% } %>
       </div>
     </div>
@@ -41,6 +51,7 @@
       </div>
     </div>
     <% } %>
+          <% include back.ejs %>
   </div>
    
 <% include footer.ejs  %>

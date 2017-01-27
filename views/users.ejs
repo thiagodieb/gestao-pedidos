@@ -1,0 +1,18 @@
+<% include header.ejs %>
+
+  <div class="container-fluid container">
+      <h1><%= title %></h1>
+          <div class="row">        
+               <div class="col-6 col-md-4 " style="text-align:center;">
+                  <a href="/products/categorie/<%=content.id %>">
+                    <h4>
+                      <%=content.login %>
+                      <%=content.senha %>
+                      <%=content.email %>
+                    </h4>
+                  </a>
+               </div>
+          </div>
+   </div>
+   
+<% include footer.ejs  %>

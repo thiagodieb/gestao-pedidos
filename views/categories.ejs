@@ -1,0 +1,19 @@
+<% include header.ejs %>
+
+  <div class="container-fluid container">
+      <h1><%= title %></h1>
+          <div class="row">        
+            <% for(var i=0; i<categories.length; i++) {%>
+               <div class="col-md-3 col-sm-6 col-xs-6" style="text-align:center;height:200px;">
+                  <a href="/products/sub-categorie/<%=categories[i].id %>">
+                    <img class="img-thumbnail" style="height:100px"src="<%=categories[i].imagem %>">
+                    <h4>
+                      <%=categories[i].descricao %>
+                    </h4>
+                  </a>
+               </div>
+            <% } %>
+          </div>
+   </div>
+   
+<% include footer.ejs %>

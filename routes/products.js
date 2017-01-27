@@ -40,6 +40,30 @@ module.exports = function(security) {
 
 
 
+    router.get('/:id', security, function(req, res, next) {
+         var id = req.params.id;
+        console.log(id);
+        var s = ` SELECT 
+                    * 
+                FROM 
+                    tb_comercio_produto 
+                WHERE 
+                    id=`+id;
+        conn.connect(function(c){
+            c.select(s,function(returnQuery){
+                if(returnQuery.length >0){
+                    returnQuery[0].imagem = "/images/products/"+returnQuery[0].id+".jpg";
+                }
+                res.render('product',{'content':returnQuery,'title':'Produto'});   
+            });
+        });
+      
+
+      
+    });
+
+
+
     router.get('/categorie/:id', function(req, res, next) {
         var id = req.params.id;
         console.log(id);
@@ -68,11 +92,13 @@ module.exports = function(security) {
         	c.select(s2,function(returnQuery){
         		
         		returnContent = {'title':returnQuery[0].descricao};
+
             	c.select(s,function(returnQuery2){
             		console.log(returnQuery2);
     		       	for (var i = returnQuery2.length - 1; i >= 0; i--) {
     		       		for (var j = categoriesExcluded.length - 1; j >= 0; j--) {
     		       			if(categoriesExcluded[j] != returnQuery2[i].id ){
+                                returnQuery2[i].imagem = "/images/sub-categories/"+returnQuery2[i].id+".jpg";
     		       				categoriesFinal.push(returnQuery2[i]);
     		       				break;
     		       			}
@@ -111,11 +137,14 @@ module.exports = function(security) {
         conn.connect(function(c){
         	c.select(s2,function(returnQuery){
         		
-        		returnContent = {'title':returnQuery[0].descricao};
+        		returnContent = {'title':returnQuery[0].descricao,'back':returnQuery[0].id_Grupo1};
             	c.select(s,function(returnQuery2){
-            		console.log(returnQuery2);
-            		returnContent.categories = returnQuery2;
-            		res.render('categories',returnContent);
+            		//console.log(returnQuery2);
+                    for (var i = returnQuery2.length - 1; i >= 0; i--) {
+                        returnQuery2[i].imagem = "/images/products/"+returnQuery2[i].id+".jpg";
+                    }; 
+                    returnContent.products = returnQuery2;
+            		res.render('sub-categories',returnContent);
             	});
             });
         });

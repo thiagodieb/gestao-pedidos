@@ -1,8 +1,16 @@
 body {
-  padding: 50px;
+  padding-top: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.btn-primary a.dropdown-toggle, .btn-primary a.dropdown-toggle:visited,.btn-primary a.dropdown-toggle:focus{
+	    color: #fff;
+}
+
+.clickable-row{
+	cursor:pointer;
 }

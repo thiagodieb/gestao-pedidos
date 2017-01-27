@@ -1,0 +1,46 @@
+<% include header.ejs %>
+
+  <div class="container-fluid container">
+    <div class="page-header">
+      <h1><%= title %></h1>
+    </div>
+    <div class="row"> 
+      <div class="col-md-6">
+        <% if(content.length < 0) { %>
+        <button type="button" class="btn btn-success">Abrir Mesa</button>
+        <% } else { %>
+        <a href=""><button type="button" class="btn btn-info">Adicionar Item</button></a>
+        <% } %>
+      </div>
+    </div>
+    <% if(content.length > 0) { %>
+    <div class="row">  
+      <div class="col-md-12">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Vend.</th> 
+              <th>Nome</th>
+              <th>Qt.</th>
+              <th>Vl.</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% for(var i=0; i<content.length; i++) {%>
+            <tr class="clickable-row" data-href="/products/<%=content[i].id_produto%>">
+              <td><%=content[i].id_produto %></td>
+              <td><%=content[i].id_vendedor %></td>
+              <td><%=content[i].produto_descritivo %></td>                  
+              <td><%=content[i].quantidade %></td>                  
+              <td>R$ <%=content[i].vl_total %></td>
+            </tr>
+          <% } %> 
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <% } %>
+  </div>
+   
+<% include footer.ejs  %>

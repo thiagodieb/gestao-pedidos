@@ -9,10 +9,11 @@ var security = require('./lib/security');
     var session    = require('express-session');
 
 
-var index = require('./routes/index');
+var index = require('./routes/index')(security);
 var users = require('./routes/users')(security);
 var products = require('./routes/products')(security);
 var tables = require('./routes/tables')(security);
+var orders = require('./routes/orders')(security);
 
 var app = express();
 
@@ -27,7 +28,6 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }, resave: true, saveUninitialized: true }))
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -37,6 +37,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/products', products);
 app.use('/tables', tables);
+app.use('/orders', orders);
 
 
 // catch 404 and forward to error handler

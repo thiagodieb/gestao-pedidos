@@ -10,12 +10,15 @@ module.exports = function(security) {
 		var s = `
 				SELECT 
 					id,isSuperUser,login,senha,email,matricula 
-				FROM tb_sistema_operador`;
+				FROM 
+					tb_sistema_operador
+				WHERE
+					tb_sistema_operador.login = '` + req.session.user.login + `'`;
 
 	    conn.connect(function(c){
 	        c.select(s,function(returnQuery){
 			console.log(returnQuery);
-	        res.render('users',{'content':returnQuery,'title':'Usuário'});
+	        res.render('users',{'content':returnQuery[0],'title':'Usuário'});
 	        });
 	    });
 	  
@@ -38,10 +41,12 @@ module.exports = function(security) {
 	        	if(returnQuery.length != 0){
 					if(returnQuery[0].senha == p){
 						req.session.authenticated = true;
-						res.render('users',{'content':returnQuery[0],'title':'Usuário'});	
+						req.session.user = returnQuery[0];
+						res.redirect('/');
+						//res.render('index',{'title':'Chocolateria Brasileira'});	
 					}
 				}
-				res.render('index',{'error':"Login ou Senha inválidos",'title':'Comanda Online'});
+				res.render('login',{'error':"Login ou Senha inválidos",'title':'Comanda Online'});
 	        });
 	    });
 
@@ -49,6 +54,7 @@ module.exports = function(security) {
 
 	router.get('/logout', security, function (req, res, next) {
 				delete req.session.authenticated;
+				delete req.session.user;
 				res.redirect('/');
 	});
 

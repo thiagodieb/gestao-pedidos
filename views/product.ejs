@@ -1,19 +1,18 @@
 <% include header.ejs %>
 
   <div class="container-fluid container">
-        <div class="page-header">
-          <h1><%= title %></h1>
-        </div>
+      <h1><%= title %></h1>
           <div class="row">        
+            <% for(var i=0; i<content.length; i++) {%>
                <div class="col-6 col-md-4 " style="text-align:center;">
-                  <a href="/products/categorie/<%=content.id %>">
+                  <a href="/products/categorie/<%=content[i].id %>">
+                    <img class="img-thumbnail" style="height:200px"src="<%=content[i].imagem %>">
                     <h4>
-                      <%=content.login %>
-                      <%=content.senha %>
-                      <%=content.email %>
+                      <%=content[i].descricao %>
                     </h4>
                   </a>
                </div>
+            <% } %>
           </div>
    </div>
    

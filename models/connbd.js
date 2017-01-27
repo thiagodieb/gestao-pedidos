@@ -8,6 +8,7 @@ var config = {
     server: 'localhost', 
     database: 'CafeteriaGin' 
 };
+//192.168.1.11 -U chocolateria -P 'chocolate' -Q "BACKUP DATABASE [CafeteriaGin] 
 
 
 connBD.connect = function(method_query){

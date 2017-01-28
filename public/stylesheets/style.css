@@ -14,3 +14,6 @@ a {
 .clickable-row{
 	cursor:pointer;
 }
+.modal-body textarea.form-control{
+	height: 200px;
+}

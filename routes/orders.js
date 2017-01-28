@@ -21,7 +21,8 @@ module.exports = function(security) {
 
         conn.connect(function(c){
         	c.select(s,function(returnQuery){
-        		res.render('order',{'content':returnQuery,'title':'Mesa '+id}); 
+                mesa = {'id':id,'nome':'Mesa '+id};
+        		res.render('order',{'content':returnQuery,'title':mesa.nome,'mesa':mesa}); 
             });
         });
       

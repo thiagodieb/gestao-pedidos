@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var conn = require('../models/connbd');
-
+var utils = require('../lib/utils');
 
 module.exports = function(security) {
 
@@ -64,8 +64,10 @@ module.exports = function(security) {
 
 
 
-    router.get('/categorie/:id', function(req, res, next) {
+    router.get('/categorie/:id/mesa/:id_mesa', function(req, res, next) {
         var id = req.params.id;
+        var id_mesa = req.params.id_mesa;
+        req.session.mesa = {'id':id_mesa};
         console.log(id);
         
         var s = `SELECT 
@@ -76,9 +78,7 @@ module.exports = function(security) {
         		 	tb_comercio_produto.id_grupo1 = `+ id + `
         		 	and tb_comercio_produto.id_grupo1_sub = tb_comercio_produto_grupo1_sub.id 
         		 GROUP BY 
-        		 	tb_comercio_produto_grupo1_sub.id, tb_comercio_produto_grupo1_sub.descricao
-    		 	 ORDER BY 
-    		 	 	tb_comercio_produto_grupo1_sub.descricao DESC`;
+        		 	tb_comercio_produto_grupo1_sub.id, tb_comercio_produto_grupo1_sub.descricao`;
 
      	var s2 = ` SELECT 
                 * 
@@ -94,17 +94,13 @@ module.exports = function(security) {
         		returnContent = {'title':returnQuery[0].descricao};
 
             	c.select(s,function(returnQuery2){
-            		console.log(returnQuery2);
-    		       	for (var i = returnQuery2.length - 1; i >= 0; i--) {
-    		       		for (var j = categoriesExcluded.length - 1; j >= 0; j--) {
-    		       			if(categoriesExcluded[j] != returnQuery2[i].id ){
-                                returnQuery2[i].imagem = "/images/sub-categories/"+returnQuery2[i].id+".jpg";
-    		       				categoriesFinal.push(returnQuery2[i]);
-    		       				break;
-    		       			}
-    		       		};
-
-    		       	};
+                    var newReturn = utils.checkKeys(returnQuery2,categoriesExcluded);
+                    for (var i = newReturn.length - 1; i >= 0; i--) {
+                            if(newReturn[i] != undefined){
+                                newReturn[i].imagem = "/images/sub-categories/"+newReturn[i].id+".jpg";
+                                categoriesFinal.unshift(newReturn[i]);
+                            }
+                    };
 
             		returnContent.categories = categoriesFinal;
             		res.render('categories',returnContent);
@@ -134,16 +130,26 @@ module.exports = function(security) {
                 FROM 
                 dbo.tb_comercio_produto_grupo1_sub where id=`+id; 
 
+        var productsExcluded = [100,101,102,211,210,110,111,90,91,123];
+        var productsFinal = new Array();
+
         conn.connect(function(c){
         	c.select(s2,function(returnQuery){
         		
-        		returnContent = {'title':returnQuery[0].descricao,'back':returnQuery[0].id_Grupo1};
+        		returnContent = {'title':returnQuery[0].descricao,'msg':false};
             	c.select(s,function(returnQuery2){
-            		//console.log(returnQuery2);
-                    for (var i = returnQuery2.length - 1; i >= 0; i--) {
-                        returnQuery2[i].imagem = "/images/products/"+returnQuery2[i].id+".jpg";
-                    }; 
-                    returnContent.products = returnQuery2;
+                    var newReturn = utils.checkKeys(returnQuery2,productsExcluded);
+
+                    for (var i = newReturn.length - 1; i >= 0; i--) {
+                            if(newReturn[i] != undefined){
+                                newReturn[i].imagem = "/images/products/"+newReturn[i].id+".jpg";
+                                productsFinal.unshift(newReturn[i]);
+                            }
+                    };
+
+                    returnContent.products = productsFinal;
+                    //returnContent.mesa = req.session.mesa;
+                    returnContent.mesa = {'id':8};
             		res.render('sub-categories',returnContent);
             	});
             });

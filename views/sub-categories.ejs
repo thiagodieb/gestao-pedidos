@@ -4,24 +4,31 @@
         <div class="page-header">
           <h1><%= title %></h1>
         </div>
+        <% if(msg){ %>
+            <div class="alert alert-success" role="alert">
+                <strong>Yes!</strong> <%=msg%>
+            </div>
+        <% } %>
           <% include back.ejs %>
           <div class="row">  
             <% for(var i=0; i<products.length; i++) {%>
-               <div class="col-md-3 col-sm-6 col-xs-6" style="text-align:center;height:200px;">
+               <div class="col-md-3 col-sm-6 col-xs-6" style="text-align:center;height:210px;">
                   <!-- <a href="/products/<%=products[i].id %>"> -->
                     <img class="img-thumbnail" style="height:100px"src="<%=products[i].imagem %>">
                     <h5><%=products[i].descricao %></h5>
                     <p>
-                      <span>R$ <%=products[i].preco_venda %></span>
+                      <h4>R$ <%=products[i].preco_venda %></h4>
                       <button type="button" class="dropdown btn btn-sm btn-primary">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Adicionar<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Adicionar </a></li>
-                          <li><a href="#">Adicionar 2</a></li>
+
+                          <li><a href="" data-toggle="modal" data-target="#adicionar" data-product="<%=products[i].id %>" data-mesa="<%=mesa.id %>" data-quantidade="1">Adicionar 1</a></li>
+
+                          <li><a href="" data-toggle="modal"  data-target="#adicionar" data-product="<%=products[i].id %>" data-mesa="<%=mesa.id %>" data-quantidade="2">Adicionar 2</a></li>
+
                           <li role="separator" class="divider"></li>
-                          <li class="dropdown-header">Nav header</li>
-                          <li><a href="#">Separated link</a></li>
-                          <li><a href="#">One more separated link</a></li>
+                          <li><a href="" data-toggle="modal" data-target="#complemento" data-product="<%=products[i].id %>" data-descricao="<%=products[i].descricao %>" data-quantidade="1">Com complemento</a>
+                          </li>
                         </ul>
                       </button>
                     </p>
@@ -30,6 +37,54 @@
             <% } %>
           </div>
           <% include back.ejs %>
+
+          <div class="modal fade" id="complemento" tabindex="-1" role="dialog" aria-labelledby="complementoLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="complementoLabel"></h4>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <input type="hidden" id="product_id" name="product_id">
+                    <div class="form-group">
+                      <label for="message-text" class="control-label">Complemento:</label>
+                      <textarea class="form-control" id="message-text" name="complemento"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-primary">Adicionar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="adicionar" tabindex="-1" role="dialog" aria-labelledby="adicionarLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="adicionarLabel"></h4>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <input type="hidden" id="product_id" name="product_id">
+                    <input type="hidden" id="quantidade" name="quantidade">
+                    <input type="hidden" id="mesa" name="mesa">
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-primary">Adicionar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
    </div>
    
 <% include footer.ejs %>
